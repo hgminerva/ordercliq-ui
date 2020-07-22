@@ -1,0 +1,19 @@
+export class ConfirmOrderModel {
+    Id: number = 0;
+    OrderNumber: string = "";
+    OrderDate: string = "";
+    ProductCode: string = "";
+    ProductManualCode: string = "";
+    ProductDescription: string = "";
+    Remarks: string = "";
+    ProductPrice: number = 0;
+    Quantity: number = 0;
+    Amount: number = 0;
+    SellerUserName: string = "";
+    SellerFullName: string = "";
+    BuyerUserName: string = "";
+    BuyerFullName: string = "";
+    BuyerAddress: string = "";
+    BuyerContactNumber: string = "";
+    Status: string = "";
+}

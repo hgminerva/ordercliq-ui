@@ -1,0 +1,116 @@
+<mat-toolbar>
+    <img src="../../../assets/dashboard-icons/order.png" height="35" />
+    <span>&nbsp;&nbsp; Confirm Order</span>
+</mat-toolbar>
+<div class="software-container">
+    <div [hidden]="confirmOrderSpinnerHidden">
+        <div style="width: 100%; text-align: center;">
+            Please wait...
+        </div>
+        <br />
+        <mat-spinner class="spinner-center"></mat-spinner>
+    </div>
+    <div [hidden]="confirmOrderSpinnerContentHidden">
+        <div style="width: 100%; text-align: center;">
+            <h1>Thank you!</h1>
+        </div>
+
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="15" style="margin: 5px;"></div>
+            <div fxFlex="70" style="margin: 5px;">
+                <mat-card>
+                    <div fxLayout="row" fxLayout.xs="column">
+                        <div fxFlex="25" style="margin: 5px;">
+                            <p style="font-size: 15px;">
+                                <b>Order Number</b>
+                                <br />
+                                <span> {{confirmOrderModel.OrderNumber}}</span>
+                            </p>
+                        </div>
+                        <div fxFlex="25" style="margin: 5px;">
+                            <p style="font-size: 15px;">
+                                <b>Order Date</b>
+                                <br />
+                                <span> {{confirmOrderModel.OrderDate}}</span>
+                            </p>
+                        </div>
+                        <div fxFlex="50" style="margin: 5px;"></div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row" fxLayout.xs="column">
+                        <div fxFlex="100" style="margin: 5px; padding-top: 10px;">
+                            <span>Product Details</span>
+                            <br />
+                            <br />
+                            <p style="font-size: 23px; font-weight: bold;">
+                                <b>{{confirmOrderModel.ProductDescription}}</b></p>
+                            <p style="font-size: 17px; margin-top: -5px;"><b>Product Code: </b> &nbsp;
+                                {{confirmOrderModel.ProductManualCode}}</p>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayout.xs="column">
+                        <div fxFlex="25" style="margin: 5px;">
+                            <p style="font-size: 15px;">
+                                <b>Price</b>
+                                <br />
+                                <span> ₱ {{confirmOrderModel.ProductPrice}}</span>
+                            </p>
+                        </div>
+                        <div fxFlex="25" style="margin: 5px;">
+                            <p style="font-size: 15px;">
+                                <b>Quantity</b>
+                                <br />
+                                <span> ₱ {{confirmOrderModel.Quantity}}</span>
+                            </p>
+                        </div>
+                        <div fxFlex="25" style="margin: 5px;">
+                            <p style="font-size: 15px;">
+                                <b>Amount</b>
+                                <br />
+                                <span> ₱ {{confirmOrderModel.Amount}}</span>
+                            </p>
+                        </div>
+                        <div fxFlex="25" style="margin: 5px;">
+
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row" fxLayout.xs="column">
+                        <div fxFlex="100" style="margin: 5px; padding-top: 10px;">
+                            <span>Shipping information</span>
+                            <br />
+                            <br />
+                            <p style="font-size: 15px;">
+                                <b>Address</b>
+                                <br />
+                                <span> {{confirmOrderModel.BuyerAddress}}</span>
+                            </p>
+                            <p style="font-size: 15px;">
+                                <b>Contact Number</b>
+                                <br />
+                                <span> {{confirmOrderModel.BuyerContactNumber}}</span>
+                            </p>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div fxLayout="row" fxLayout.xs="column">
+                        <div fxFlex="100" style="margin: 5px; padding-top: 10px;">
+                            <span>Remarks and other information</span>
+                            <br />
+                            <p style="font-size: 15px;">
+                                <br />
+                                <span> {{confirmOrderModel.Remarks}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </mat-card>
+                <br />
+                <button routerLink="/software-buyer/order" mat-flat-button color="primary"
+                    style="width: 100%; font-size: 20px; padding: 10px;">
+                    OK
+                </button>
+            </div>
+            <div fxFlex="15" style="margin: 5px;"></div>
+        </div>
+    </div>
+</div>

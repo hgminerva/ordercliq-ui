@@ -1,0 +1,254 @@
+<mat-toolbar>
+    <img src="../../../assets/dashboard-icons/order.png" height="35" />
+    <span>&nbsp;&nbsp; Create Order</span>
+</mat-toolbar>
+<div [hidden]="createOrderSpinnerHidden">
+    <div class="software-order-container">
+        <div style="width: 100%; text-align: center;">
+            {{orderSpinnerStatus}}
+        </div>
+        <br />
+        <mat-spinner class="spinner-center"></mat-spinner>
+    </div>
+</div>
+<div [hidden]="productNotFoundHidden">
+    <div class="software-order-container">
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="35"></div>
+            <div fxFlex="30">
+                <div style="width: 100%; text-align: center;">
+                    <img src="./../../../assets/dashboard-icons/error-404.png" style="width: 100%;" />
+                </div>
+            </div>
+            <div fxFlex="35"></div>
+        </div>
+        <div style="width: 100%; text-align: center; font-size: 30px;">
+            <p>Sorry. The product is not available or not found in the server. </p>
+        </div>
+    </div>
+</div>
+<div [hidden]="createOrderSpinnerContentHidden">
+    <mat-horizontal-stepper linear #stepper>
+        <mat-step [stepControl]="orderFormGroup" [editable]="isOrderFormGroupEditable">
+            <ng-template matStepLabel>Order</ng-template>
+            <div class="software-order-container">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="84" style="margin: 5px;">
+                        <mat-card>
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="34" style="margin: 5px;">
+                                        <img src="{{createOrderProductModel.ImageURL}}" style="width: 100%;" />
+                                    </div>
+                                    <div fxFlex="66"
+                                        style="margin-top: 5px; margin-bottom: 5px; margin-left: 15px; margin-right: 15px;">
+                                        <h1><b>{{createOrderProductModel.ProductDescription}}</b></h1>
+                                        <h3><b>Product Code: </b> &nbsp; {{createOrderProductModel.ProductManualCode}}
+                                        </h3>
+                                        <p style="font-size: 15px;">
+                                            {{createOrderProductModel.Particulars}}
+                                        </p>
+                                        <p style="font-size: 15px;">Sold by {{createOrderProductModel.SellerFullName}}
+                                        </p>
+                                        <h1>₱ {{price}}</h1>
+                                        <mat-list style="margin-left: -16px !important; margin-top: -10px;">
+                                            <mat-list-item>
+                                                <button mat-stroked-button (click)="buttonAddQuantityClick()">
+                                                    <mat-icon matSuffix>add</mat-icon>
+                                                </button>
+                                                <span style="font-size: 30px;">
+                                                    &nbsp;
+                                                    {{quantity}}
+                                                    &nbsp;
+                                                </span>
+                                                <button mat-stroked-button (click)="buttonMinusQuantityClick()">
+                                                    <mat-icon matSuffix>remove</mat-icon>
+                                                </button>
+                                            </mat-list-item>
+                                        </mat-list>
+                                        <br />
+                                        <h2>Total: &nbsp; ₱ {{amount}}</h2>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div fxFlex="16" style="margin: 5px;">
+                        <button mat-flat-button color="primary" style="width: 100%; font-size: 20px; padding: 10px;"
+                            id="buttonPlaceOrder" matStepperNext>
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="addressFormGroup" [editable]="isAddressFormGroupEditable">
+            <ng-template matStepLabel>Address</ng-template>
+            <div class="software-order-container">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="84" style="margin: 5px;">
+                        <mat-card>
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="50">
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="100" style="margin: 5px;">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Complete Address</mat-label>
+                                                    <textarea [(ngModel)]="loginUserModel.Address"
+                                                        [ngModelOptions]="{standalone: true}" matInput
+                                                        #text_compelete_address maxlength="1000"
+                                                        placeholder="eg., House/Bldg No., Street, Barangay, City, Country and Postal Code"
+                                                        rows="7"></textarea>
+                                                    <mat-icon matSuffix>edit_location</mat-icon>
+                                                    <mat-hint align="end">{{text_compelete_address.value.length}} / 1000
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Contact Number</mat-label>
+                                                    <input [(ngModel)]="loginUserModel.ContactNumber"
+                                                        [ngModelOptions]="{standalone: true}" matInput
+                                                        #text_contact_number maxlength="1000"
+                                                        placeholder="(+63) 9569863933" />
+                                                    <mat-icon matSuffix>phone</mat-icon>
+                                                    <mat-hint align="end">{{text_contact_number.value.length}} / 1000
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Email Address</mat-label>
+                                                    <input [(ngModel)]="loginUserModel.EmailAddress"
+                                                        [ngModelOptions]="{standalone: true}" matInput
+                                                        #text_email_address maxlength="1000"
+                                                        placeholder="(+63) 9569863933" />
+                                                    <mat-icon matSuffix>email</mat-icon>
+                                                    <mat-hint align="end">{{text_email_address.value.length}} / 1000
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="50">
+                                        <div fxLayout="row" fxLayout.xs="column">
+                                            <div fxFlex="100" style="margin: 5px;">
+                                                <mat-form-field appearance="outline" style="width: 100%;">
+                                                    <mat-label>Remarks (Optional): Notes to the seller. Eg., No onions.
+                                                    </mat-label>
+                                                    <input [(ngModel)]="placeOrderRemarks"
+                                                        [ngModelOptions]="{standalone: true}" matInput #text_Remarks
+                                                        maxlength="1000"
+                                                        placeholder="Remarks (Optional): Notes to the seller. Eg., No onions." />
+                                                    <mat-icon matSuffix>edit</mat-icon>
+                                                    <mat-hint align="end">{{text_Remarks.value.length}} / 1000
+                                                    </mat-hint>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div fxFlex="16" style="margin: 5px;">
+                        <button mat-stroked-button color="primary"
+                            style="width: 100%; font-size: 20px; padding: 10px; margin-bottom: 5px;"
+                            id="buttonPlaceOrder" matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-flat-button color="primary" style="width: 100%; font-size: 20px; padding: 10px;"
+                            id="buttonPlaceOrder" matStepperNext>
+                            Next
+                        </button>
+                    </div>
+                </div>
+                <br />
+            </div>
+        </mat-step>
+        <mat-step [stepControl]="confirmFormGroup" [editable]="isConfirmFormGroupEditable">
+            <ng-template matStepLabel>Confirm</ng-template>
+            <div class="software-order-container">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="84" style="margin: 5px;">
+                        <mat-card>
+                            <mat-card-content>
+                                <span>Product details</span>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="100" style="margin: 5px;">
+                                        <br />
+                                        <h2><b>{{createOrderProductModel.ProductDescription}}</b></h2>
+                                        <p style="margin-top: -10px;">
+                                            <b>Code:</b> &nbsp; {{createOrderProductModel.ProductManualCode}}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="30" style="margin: 5px;">
+                                        <p style="font-size: 15px;">
+                                            <b>Price</b>
+                                            <br />
+                                            <span>₱ {{price}}</span>
+                                        </p>
+                                    </div>
+                                    <div fxFlex="30" style="margin: 5px;">
+                                        <p style="font-size: 15px;">
+                                            <b>Quantity</b>
+                                            <br />
+                                            <span>{{quantity}}</span>
+                                        </p>
+                                    </div>
+                                    <div fxFlex="30" style="margin: 5px;">
+                                        <p style="font-size: 15px;">
+                                            <b>Amount</b>
+                                            <br />
+                                            <span>₱ {{amount}}</span>
+                                        </p>
+                                    </div>
+                                    <div fxFlex="10" style="margin: 5px;"></div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <br />
+                                <span>Shipping information</span>
+                                <br />
+                                <br />
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="100" style="margin: 5px;">
+                                        <p style="font-size: 15px;">
+                                            <b>Address</b>
+                                            <br />
+                                            <span> {{loginUserModel.Address}}</span>
+                                        </p>
+                                        <p style="font-size: 15px;">
+                                            <b>Contact Number</b>
+                                            <br />
+                                            <span> {{loginUserModel.ContactNumber}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <mat-divider></mat-divider>
+                                <br />
+                                <span>Remarks and other information</span>
+                                <div fxLayout="row" fxLayout.xs="column">
+                                    <div fxFlex="100" style="margin: 5px;">
+                                        <br />
+                                        {{placeOrderRemarks}}
+                                    </div>
+                                </div>
+                                <br />
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+                    <div fxFlex="16" style="margin: 5px;">
+                        <button mat-stroked-button color="primary"
+                            style="width: 100%; font-size: 20px; padding: 10px; margin-bottom: 5px;"
+                            id="buttonPlaceOrder" matStepperPrevious>
+                            Back
+                        </button>
+                        <button mat-flat-button color="accent" style="width: 100%; font-size: 20px; padding: 10px;"
+                            id="buttonPlaceOrder" (click)="buttonPlaceOrderClick()" matStepperNext>
+                            Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>

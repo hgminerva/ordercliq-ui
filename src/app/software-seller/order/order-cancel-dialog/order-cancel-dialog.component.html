@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>
+    {{ dialogTitle }}
+</h1>
+<div mat-dialog-content>
+    <p>{{ dialogContent }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-flat-button color="warn" (click)="buttonOrderCancelDialogCancelClick()"
+        id="buttonOrderCancelDialogCancel">
+        <mat-icon matSuffix>cancel</mat-icon> Cancel
+    </button>
+    &nbsp;
+    <button mat-stroked-button (click)="buttonOrderCancelDialogCloseClick()" id="buttonOrderCancelDialogClose">
+        <mat-icon matSuffix>close</mat-icon> Close
+    </button>
+</div>

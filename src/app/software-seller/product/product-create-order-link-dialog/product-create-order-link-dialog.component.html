@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>
+    Order Link
+</h1>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayout.xs="column">
+        <div fxFlex="100">
+            <p>Copy the order link</p>
+
+            <mat-form-field appearance="outline" style="width: 100%;">
+                <mat-label>Order Link</mat-label>
+                <input [(ngModel)]="orderLink" [ngModelOptions]="{standalone: true}" matInput #text_order_link
+                    maxlength="5000" placeholder="https://" />
+                <mat-icon matSuffix>share</mat-icon>
+                <mat-hint align="end">{{text_order_link.value.length}} / 5000</mat-hint>
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions>
+    &nbsp;
+    <button mat-stroked-button (click)="buttonProductOrderLinkDialogCloseClick()"
+        id="buttonProductOrderLinkDialogClose">
+        <mat-icon matSuffix>close</mat-icon> Close
+    </button>
+</div>

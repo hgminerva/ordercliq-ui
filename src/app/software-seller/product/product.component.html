@@ -1,0 +1,182 @@
+<mat-toolbar>
+    <img src="../../../assets/dashboard-icons/product.png" height="35" />
+    <span>&nbsp;&nbsp; Products</span>
+    <span class="spacer"></span>
+    <button mat-flat-button color="accent" (click)="buttonAddProductClick()">
+        <mat-icon matSuffix>add</mat-icon> Create Product
+    </button>
+</mat-toolbar>
+<mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Active">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="100" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyActiveProductFilter($event)" type="text"
+                            #text_filter_active_product maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_active_product.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="activeProductSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="activeProductSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="activeProductDataSource" #activeProductSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonEdit">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row">
+                                    <button mat-flat-button color="primary" style="width: 100%;"
+                                        (click)="buttonEditActiveProductClick(row)">
+                                        <mat-icon matSuffix>edit</mat-icon> {{row.ButtonEdit}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonDelete">
+                                <mat-header-cell fxFlex="110px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="110px" *matCellDef="let row">
+                                    <button mat-flat-button color="warn" style="width: 100%;"
+                                        (click)="buttonDeleteActiveProductClick(row)">
+                                        <mat-icon matSuffix>delete</mat-icon> {{row.ButtonDelete}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductCode">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.ProductCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductManualCode">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header>Manual Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row"> {{row.ProductManualCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductSKUCode">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header>SKU Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row"> {{row.ProductSKUCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Price">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Price
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row" class="cell-align-right">
+                                    {{row.Price}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonOrderLink">
+                                <mat-header-cell fxFlex="90px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="90px" *matCellDef="let row">
+                                    <button mat-stroked-button matTooltip="Generate order link"
+                                        [matTooltipPosition]="'right'" style="width: 100%; background-color: white;"
+                                        (click)="buttonOrderLinkClick(row)">
+                                        <mat-icon matSuffix>share</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" activeProductDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: activeProductDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="7" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_active_product.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #activeProductPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="In-Active">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="100" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyInActiveProductFilter($event)" type="text"
+                            #text_filter_inactive_product maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_inactive_product.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="inActiveProductSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="inActiveProductSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="inActiveProductDataSource" #inActiveProductSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonEdit">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row">
+                                    <button mat-flat-button color="primary" style="width: 100%;"
+                                        (click)="buttonEditInActiveProductClick(row)">
+                                        <mat-icon matSuffix>edit</mat-icon> {{row.ButtonEdit}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonDelete">
+                                <mat-header-cell fxFlex="110px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="110px" *matCellDef="let row">
+                                    <button mat-flat-button color="warn" style="width: 100%;"
+                                        (click)="buttonDeleteInActiveProductClick(row)">
+                                        <mat-icon matSuffix>delete</mat-icon> {{row.ButtonDelete}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductCode">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.ProductCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductManualCode">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header>Manual Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row"> {{row.ProductManualCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductSKUCode">
+                                <mat-header-cell fxFlex="120px" *matHeaderCellDef mat-sort-header>SKU Code
+                                </mat-header-cell>
+                                <mat-cell fxFlex="120px" *matCellDef="let row"> {{row.ProductSKUCode}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Price">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Price
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row" class="cell-align-right">
+                                    {{row.Price}}</mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" inActiveProductDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: inActiveProductDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="7" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_inactive_product.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #inActiveProductPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

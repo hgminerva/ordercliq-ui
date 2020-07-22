@@ -1,0 +1,46 @@
+/* You can add global styles to this file, and also import other style files */
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.software-container {
+    padding: 15px;
+}
+
+.software-order-container {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+@media only screen and (max-width: 600px) {
+    .software-order-container {
+        padding-top: 15px;
+        padding-bottom: 15px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+.spinner-center {
+    margin:auto;
+    display:block;   
+}
+
+.blue-snackbar {
+    background: #00a4ef;
+    color: #fff;
+}
+
+.green-snackbar {
+    background: #7fba00;
+    color: #fff;
+}
+
+.orange-snackbar {
+    background: #f25022;
+    color: #fff;
+}

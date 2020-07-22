@@ -1,0 +1,471 @@
+<mat-toolbar>
+    <img src="../../../assets/dashboard-icons/order.png" height="35" />
+    <span>&nbsp;&nbsp; Orders</span>
+</mat-toolbar>
+<mat-tab-group mat-align-tabs="start">
+    <mat-tab label="Open">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="start_date_picker_open_order"
+                            [formControl]="openOrderStartDateFilterFormControl"
+                            [value]="openOrderStartDateFilterFormControl.value"
+                            (dateChange)="openOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="start_date_picker_open_order"></mat-datepicker-toggle>
+                        <mat-datepicker #start_date_picker_open_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="end_date_picker_open_order"
+                            [formControl]="openOrderEndDateFilterFormControl"
+                            [value]="openOrderEndDateFilterFormControl.value"
+                            (dateChange)="openOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="end_date_picker_open_order"></mat-datepicker-toggle>
+                        <mat-datepicker #end_date_picker_open_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="70" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyOpenOrderFilter($event)" type="text" #text_filter_open_order
+                            maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_open_order.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="openOrderSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="openOrderSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="openOrderDataSource" #openOrderSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonView">
+                                <mat-header-cell fxFlex="90px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="90px" *matCellDef="let row">
+                                    <button mat-stroked-button matTooltip="Click to view order details."
+                                        [matTooltipPosition]="'left'" style="width: 100%; background-color: white;"
+                                        (click)="buttonPreviewOpenOrderClick(row)">
+                                        <mat-icon matSuffix>preview</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderNumber">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order No.
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderNumber}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderDate">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order Date
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderDate}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductPrice">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row">
+                                    ₱ {{row.ProductPrice}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Quantity
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> {{row.Quantity}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Amount
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> ₱ {{row.Amount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BuyerFullName">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header>Buyer
+                                </mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row"> {{row.BuyerFullName}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonVerify">
+                                <mat-header-cell fxFlex="110px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="110px" *matCellDef="let row">
+                                    <button mat-flat-button color="primary" style="width: 100%;"
+                                        (click)="buttonVerifyOpenOrderClick(row)">
+                                        <mat-icon matSuffix>fact_check</mat-icon> {{row.ButtonVerify}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonCancel">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row">
+                                    <button mat-flat-button color="warn" style="width: 100%;"
+                                        (click)="buttonCancelOpenOrderClick(row)">
+                                        <mat-icon matSuffix>cancel</mat-icon> {{row.ButtonCancel}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" openOrderDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: openOrderDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="10" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_open_order.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #openOrderPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Verified">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="start_date_picker_verified_order"
+                            [formControl]="verifiedOrderStartDateFilterFormControl"
+                            [value]="verifiedOrderStartDateFilterFormControl.value"
+                            (dateChange)="verifiedOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="start_date_picker_verified_order">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #start_date_picker_verified_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="end_date_picker_verified_order"
+                            [formControl]="verifiedOrderEndDateFilterFormControl"
+                            [value]="verifiedOrderEndDateFilterFormControl.value"
+                            (dateChange)="verifiedOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="end_date_picker_verified_order"></mat-datepicker-toggle>
+                        <mat-datepicker #end_date_picker_verified_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="70" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyVerifiedOrderFilter($event)" type="text"
+                            #text_filter_verified_order maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_verified_order.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="verifiedOrderSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="verifiedOrderSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="verifiedOrderDataSource" #verifiedOrderSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonView">
+                                <mat-header-cell fxFlex="90px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="90px" *matCellDef="let row">
+                                    <button mat-stroked-button matTooltip="Click to view order details."
+                                        [matTooltipPosition]="'left'" style="width: 100%; background-color: white;"
+                                        (click)="buttonPreviewVerifiedOrderClick(row)">
+                                        <mat-icon matSuffix>preview</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderNumber">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order No.
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderNumber}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderDate">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order Date
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderDate}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductPrice">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row">
+                                    ₱ {{row.ProductPrice}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Quantity
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> {{row.Quantity}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Amount
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> ₱ {{row.Amount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BuyerFullName">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header>Buyer
+                                </mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row"> {{row.BuyerFullName}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonComplete">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row">
+                                    <button mat-flat-button color="accent" style="width: 100%;"
+                                        (click)="buttonCompleteVerifiedOrderClick(row)">
+                                        <mat-icon matSuffix>check_circle</mat-icon> {{row.ButtonComplete}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ButtonCancel">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row">
+                                    <button mat-flat-button color="warn" style="width: 100%;"
+                                        (click)="buttonCancelVerifiedOrderClick(row)">
+                                        <mat-icon matSuffix>cancel</mat-icon> {{row.ButtonCancel}}
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" verifiedOrderDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: verifiedOrderDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="10" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_verified_order.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #verifiedOrderPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Completed">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="start_date_picker_completed_order"
+                            [formControl]="completedOrderStartDateFilterFormControl"
+                            [value]="completedOrderStartDateFilterFormControl.value"
+                            (dateChange)="completedOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="start_date_picker_completed_order">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #start_date_picker_completed_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="end_date_picker_completed_order"
+                            [formControl]="completedOrderEndDateFilterFormControl"
+                            [value]="completedOrderEndDateFilterFormControl.value"
+                            (dateChange)="completedOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="end_date_picker_completed_order">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #end_date_picker_completed_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="70" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyCompletedOrderFilter($event)" type="text"
+                            #text_filter_completed_order maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_completed_order.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="completedOrderSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="completedOrderSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="completedOrderDataSource" #completedOrderSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonView">
+                                <mat-header-cell fxFlex="90px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="90px" *matCellDef="let row">
+                                    <button mat-stroked-button matTooltip="Click to view order details."
+                                        [matTooltipPosition]="'left'" style="width: 100%; background-color: white;"
+                                        (click)="buttonPreviewCompletedOrderClick(row)">
+                                        <mat-icon matSuffix>preview</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderNumber">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order No.
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderNumber}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderDate">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order Date
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderDate}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductPrice">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row">
+                                    ₱ {{row.ProductPrice}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Quantity
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> {{row.Quantity}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Amount
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> ₱ {{row.Amount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BuyerFullName">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header>Buyer
+                                </mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row"> {{row.BuyerFullName}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" completedOrderDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: completedOrderDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="8" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_completed_order.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #completedOrderPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="Cancelled">
+        <div class="software-container">
+            <div fxLayout="row" fxLayout.xs="column">
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Start date</mat-label>
+                        <input matInput [matDatepicker]="start_date_picker_cancelled_order"
+                            [formControl]="cancelledOrderStartDateFilterFormControl"
+                            [value]="cancelledOrderStartDateFilterFormControl.value"
+                            (dateChange)="cancelledOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="start_date_picker_cancelled_order">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #start_date_picker_cancelled_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="15" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>End date</mat-label>
+                        <input matInput [matDatepicker]="end_date_picker_cancelled_order"
+                            [formControl]="cancelledOrderEndDateFilterFormControl"
+                            [value]="cancelledOrderEndDateFilterFormControl.value"
+                            (dateChange)="cancelledOrderDateFiltersDateChange('change', $event)">
+                        <mat-datepicker-toggle matSuffix [for]="end_date_picker_cancelled_order">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #end_date_picker_cancelled_order></mat-datepicker>
+                    </mat-form-field>
+                </div>
+                <div fxFlex="70" style="margin: 5px;">
+                    <mat-form-field appearance="outline" style="width: 100%;">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyCancelledOrderFilter($event)" type="text"
+                            #text_filter_cancelled_order maxlength="1000" placeholder="Filter">
+                        <mat-icon matSuffix>filter_alt</mat-icon>
+                        <mat-hint align="end">{{text_filter_cancelled_order.value.length}} / 1000</mat-hint>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div [hidden]="cancelledOrderSpinnerHidden">
+                <mat-spinner class="spinner-center"></mat-spinner>
+            </div>
+            <div [hidden]="cancelledOrderSpinnerContentHidden">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-table [dataSource]="cancelledOrderDataSource" #cancelledOrderSort="matSort" matSort
+                            style="overflow-x: scroll;">
+                            <ng-container matColumnDef="ButtonView">
+                                <mat-header-cell fxFlex="90px" *matHeaderCellDef mat-sort-header></mat-header-cell>
+                                <mat-cell fxFlex="90px" *matCellDef="let row">
+                                    <button mat-stroked-button matTooltip="Click to view order details."
+                                        [matTooltipPosition]="'left'" style="width: 100%; background-color: white;"
+                                        (click)="buttonPreviewCancelledOrderClick(row)">
+                                        <mat-icon matSuffix>preview</mat-icon>
+                                    </button>
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderNumber">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order No.
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderNumber}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="OrderDate">
+                                <mat-header-cell fxFlex="100px" *matHeaderCellDef mat-sort-header>Order Date
+                                </mat-header-cell>
+                                <mat-cell fxFlex="100px" *matCellDef="let row"> {{row.OrderDate}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductDescription">
+                                <mat-header-cell *matHeaderCellDef mat-sort-header>Product</mat-header-cell>
+                                <mat-cell *matCellDef="let row"> {{row.ProductDescription}} </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="ProductPrice">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Price</mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row">
+                                    ₱ {{row.ProductPrice}}</mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Quantity">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Quantity
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> {{row.Quantity}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="Amount">
+                                <mat-header-cell fxFlex="80px" *matHeaderCellDef mat-sort-header>Amount
+                                </mat-header-cell>
+                                <mat-cell fxFlex="80px" *matCellDef="let row"> ₱ {{row.Amount}}
+                                </mat-cell>
+                            </ng-container>
+                            <ng-container matColumnDef="BuyerFullName">
+                                <mat-header-cell fxFlex="130px" *matHeaderCellDef mat-sort-header>Buyer
+                                </mat-header-cell>
+                                <mat-cell fxFlex="130px" *matCellDef="let row"> {{row.BuyerFullName}} </mat-cell>
+                            </ng-container>
+
+                            <mat-header-row *matHeaderRowDef=" cancelledOrderDisplayedColumns"></mat-header-row>
+                            <mat-row *matRowDef="let row; columns: cancelledOrderDisplayedColumns;"></mat-row>
+
+                            <mat-cell *matNoDataRow>
+                                <td colspan="8" style="padding: 15px;">
+                                    No data matching the filter "{{text_filter_cancelled_order.value}}"
+                                </td>
+                            </mat-cell>
+                        </mat-table>
+
+                        <mat-paginator #cancelledOrderPaginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-tab>
+</mat-tab-group>

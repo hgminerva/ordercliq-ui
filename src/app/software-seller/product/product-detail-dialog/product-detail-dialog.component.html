@@ -1,0 +1,122 @@
+<h1 mat-dialog-title>
+    {{ dialogTitle }}
+</h1>
+<mat-dialog-content>
+    <div [hidden]="productDetailSpinnerHidden">
+        <mat-spinner class="spinner-center"></mat-spinner>
+    </div>
+    <div [hidden]="productDetailNotFoundHidden">
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="35"></div>
+            <div fxFlex="30">
+                <div style="width: 100%; text-align: center;">
+                    <img src="./../../../assets/dashboard-icons/error-404.png" style="width: 100%;" />
+                </div>
+            </div>
+            <div fxFlex="35"></div>
+        </div>
+        <div style="width: 100%; text-align: center; font-size: 20px;">
+            <p>Sorry. The product is not available or not found in the server. </p>
+        </div>
+    </div>
+    <div [hidden]="productDetailSpinnerContentHidden">
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="35" style="margin: 5px;">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px; text-align: center;">
+                        <mat-card>
+                            <img src="{{detailProductModel.ImageURL}}" style="width: 70%;" />
+                        </mat-card>
+                        <br />
+                        <input readonly #productPhoto type="file" style="width: 100%;" (change)="inputFileChange()" />
+                        &nbsp;
+                        <button mat-flat-button color="accent" (click)="buttonProductUploadClick()"
+                            id="buttonProductUpload" style="width: 100%;" disabled>
+                            <mat-icon matSuffix>cloud_upload</mat-icon> Upload
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="65" style="margin: 5px;">
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="50" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Manual Code</mat-label>
+                            <input [(ngModel)]="detailProductModel.ProductManualCode"
+                                [ngModelOptions]="{standalone: true}" matInput #text_item_manual_code maxlength="250"
+                                placeholder="4800011121529" />
+                            <mat-icon matSuffix>view_array</mat-icon>
+                            <mat-hint align="end">{{text_item_manual_code.value.length}} / 250</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>SKU Code</mat-label>
+                            <input [(ngModel)]="detailProductModel.ProductSKUCode" [ngModelOptions]="{standalone: true}"
+                                matInput #text_item_SKU_code maxlength="250" placeholder="4800011121529" />
+                            <mat-icon matSuffix>view_array</mat-icon>
+                            <mat-hint align="end">{{text_item_SKU_code.value.length}} / 250</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Description</mat-label>
+                            <input [(ngModel)]="detailProductModel.ProductDescription"
+                                [ngModelOptions]="{standalone: true}" matInput #text_item_description maxlength="1000"
+                                placeholder="Eg., Ethyl Alcohol (CASINO) 500mL" />
+                            <mat-icon matSuffix>shop</mat-icon>
+                            <mat-hint align="end">{{text_item_description.value.length}} / 1000</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="50" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Price</mat-label>
+                            <input type="number" [(ngModel)]="detailProductModel.Price"
+                                [ngModelOptions]="{standalone: true}" matInput #text_item_price maxlength="100"
+                                placeholder="0.00" />
+                            <mat-icon matSuffix>local_offer</mat-icon>
+                            <mat-hint align="end">{{text_item_price.value.length}} / 100</mat-hint>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="50" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Status</mat-label>
+                            <mat-select [(ngModel)]="detailProductModel.Status" [ngModelOptions]="{standalone: true}"
+                                [value]="'Active'">
+                                <mat-option [value]="'Active'">Active</mat-option>
+                                <mat-option [value]="'InActive'">In-Active</mat-option>
+                            </mat-select>
+                            <mat-icon matSuffix>fact_check</mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayout.xs="column">
+                    <div fxFlex="100" style="margin: 5px;">
+                        <mat-form-field appearance="outline" style="width: 100%;">
+                            <mat-label>Particulars</mat-label>
+                            <textarea [(ngModel)]="detailProductModel.Particulars" [ngModelOptions]="{standalone: true}"
+                                matInput #text_item_particulars maxlength="5000"
+                                placeholder="Eg., Ethyl Alcohol (CASINO) 500mL" rows="5"></textarea>
+                            <mat-icon matSuffix>subject</mat-icon>
+                            <mat-hint align="end">{{text_item_particulars.value.length}} / 5000</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="buttonProductDetailDialogSaveClick()"
+        id="buttonProductDetailDialogSave">
+        <mat-icon matSuffix>save</mat-icon> Save
+    </button>
+    &nbsp;
+    <button mat-stroked-button (click)="buttonProductDetailDialogCloseClick()" id="buttonProductDetailDialogClose">
+        <mat-icon matSuffix>close</mat-icon> Close
+    </button>
+</mat-dialog-actions>

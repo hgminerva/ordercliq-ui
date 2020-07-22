@@ -1,0 +1,37 @@
+<div class="main-container" [class.main-is-mobile]="mobileQuery.matches">
+    <mat-toolbar color="" class="main-toolbar">
+        <a routerLink="/landing">
+            <img src="./../../assets/logo/ordercliq_logo_nav.png" style="margin-top: 10px;" height="20" />
+        </a>
+    </mat-toolbar>
+
+    <mat-sidenav-container class="sidenav-container" [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+        <mat-sidenav-content>
+            <router-outlet></router-outlet>
+            <br />
+            <br />
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+
+    <footer class="footer">
+        <div style="margin-top: 3px; font-size: 15px;">
+            &nbsp; © 2020 <b>ordercliq.com</b>
+        </div>
+        <span class="spacer"></span>
+        <a href="#">
+            <img src="../../assets/footer/facebook.png" height="25"
+                style="vertical-align: middle; margin-right: 10px;" />
+        </a>
+        <a href="#">
+            <img src="../../assets/footer/instagram.png" height="25"
+                style="vertical-align: middle; margin-right: 10px;" />
+        </a>
+        <a href="#">
+            <img src="../../assets/footer/twitter.png" height="25" style="vertical-align: middle; margin-right: 10px;" />
+        </a>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+    </footer>
+</div>
