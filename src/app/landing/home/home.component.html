@@ -7,59 +7,69 @@
         Login
     </button>
 </mat-toolbar>
-<div style="padding-top: 100px; 
-            padding-left: 30px; 
-            padding-right: 30px; 
-            padding-bottom: 30px; 
-            background-color: #7FBA00;">
-    <div fxLayout="row" fxLayout.xs="column">
-        <div fxFlex="60" style="margin: 30px;">
-            <div style="width: 100%; text-align: center;">
+<div style="background-color: #7FBA00; height: 100vh;">
+    <br />
+    <br />
+    <div
+        style="background-color: #575352; padding-top: 50px; padding-bottom: 50px; padding-left: 50px; padding-right: 50px;">
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="10" style="padding: 5px;"></div>
+            <div fxFlex="60" style="padding: 5px;">
+                <br />
                 <h1
-                    style="font-size: 50px; font-weight: bold; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.2; color: white;">
-                    Manage your orders with ease like a folder!
+                    style="font-size: 70px; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.0; color: white;">
+                    Click to manage your orders.
                 </h1>
+                <br />
+                <br />
+                <button mat-flat-button color="primary" routerLink="/account/login/0"
+                    style="padding-top: 10px; padding-bottom: 10px; padding-left: 100px; padding-right: 100px;">
+                    LOGIN
+                </button>
+                <br />
+                <br />
+                <a routerLink="/account/register/Seller/0"
+                    style="font-size: 16px; font-family: 'Segoe UI'; color: white;">No account yet? Register here!</a>
             </div>
-        </div>
-        <div fxFlex="40" style="margin: 5px;">
-            <mat-card>
-                <button mat-flat-button color="primary" routerLink="/account/register/Seller/0" style="padding: 10px;">
-                    <img src="../../../assets/dashboard-icons/seller.png" style="width: 20%; margin-bottom: 15px;" />
-                    <p style="font-size: 25px; line-height: 1;">
-                        I want to Sell!
-                    </p>
-                </button>
-                <br />
-                <br />
-                <button mat-flat-button color="primary" routerLink="/account/register/Seller/0" style="padding: 10px;">
-                    <img src="../../../assets/dashboard-icons/buyer.png" style="width: 20%;  margin-bottom: 15px;" />
-                    <p style="font-size: 25px; line-height: 1;">
-                        I want to Buy!
-                    </p>
-                </button>
-            </mat-card>
-            <br />
-            <br />
+            <div fxFlex="20" style="padding: 5px;">
+                <img src="../../../assets/logo/orderfolder_fav.png" style="width: 100%;">
+            </div>
+            <div fxFlex="10" style="padding: 5px;"></div>
         </div>
     </div>
+    <div style="background-color: #7FBA00; padding: 50px;">
+        <br />
+        <br />
+        <div fxLayout="row" fxLayout.xs="column">
+            <div fxFlex="25" style="padding: 5px;"></div>
+            <div fxFlex="20" style="padding: 5px;">
+                <img src="../../../assets/get-on-mobile/available_on_the_app_store.png" style="width: 100%;">
+            </div>
+            <div fxFlex="10" style="padding: 5px;"></div>
+            <div fxFlex="20" style="padding: 5px;">
+                <img src="../../../assets/get-on-mobile/get_it_on_google_play.png" style="width: 100%;">
+            </div>
+            <div fxFlex="25" style="padding: 5px;"></div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
 </div>
-<br />
 <footer class="footer">
     <div style="margin-top: 3px; font-size: 15px;">
         &nbsp; © 2020 <b>ordercliq.com</b>
     </div>
     <span class="spacer"></span>
     <a href="#">
-        <img src="../../assets/footer/facebook.png" height="25"
-            style="vertical-align: middle; margin-right: 10px;" />
+        <img src="../../assets/footer/facebook.png" height="25" style="vertical-align: middle; margin-right: 10px;" />
     </a>
     <a href="#">
-        <img src="../../assets/footer/instagram.png" height="25"
-            style="vertical-align: middle; margin-right: 10px;" />
+        <img src="../../assets/footer/instagram.png" height="25" style="vertical-align: middle; margin-right: 10px;" />
     </a>
     <a href="#">
-        <img src="../../assets/footer/twitter.png" height="25"
-            style="vertical-align: middle; margin-right: 10px;" />
+        <img src="../../assets/footer/twitter.png" height="25" style="vertical-align: middle; margin-right: 10px;" />
     </a>
     &nbsp;
     &nbsp;

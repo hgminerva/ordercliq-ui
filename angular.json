@@ -180,5 +180,8 @@
       }
     }
   },
-  "defaultProject": "ordercliq"
+  "defaultProject": "ordercliq",
+  "cli": {
+    "analytics": "36e60f25-6439-48aa-85a7-8df2db93c63c"
+  }
 }
