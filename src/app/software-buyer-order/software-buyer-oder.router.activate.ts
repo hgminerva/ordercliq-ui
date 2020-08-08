@@ -30,7 +30,7 @@ export class SoftwareBuyerOrderRouterActivate implements CanActivate {
                             this.titleService.setTitle(data.ProductDescription);
                             this.metaService.updateTag({ property: 'og:title', content: data.ProductDescription });
                             this.metaService.updateTag({ property: 'og:description', content: data.Particulars });
-                            this.metaService.updateTag({ property: 'og:url', content: 'https://www.orderfolder.com/software-buyer-order/create-order/' + productId });
+                            this.metaService.updateTag({ property: 'og:url', content: 'https://www.ordercliq.com/software-buyer-order/create-order/' + productId });
                             this.metaService.updateTag({ property: 'og:image', content: data.ImageURL });
                         }
 
